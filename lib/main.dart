@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 main() => runApp(PerguntaApp());
 
 class PerguntaApp extends StatelessWidget {
-  var perguntaSelecionada = 1;
+  final perguntaSelecionada = 1;
 
   void responder() {
-    perguntaSelecionada++;
+    // perguntaSelecionada++;
     print(perguntaSelecionada);
   }
 
