@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 
 main() => runApp(PerguntaApp());
 
-class PerguntaApp extends StatelessWidget {
-  final perguntaSelecionada = 1;
+class PerguntaAppState extends State<PerguntaApp> {
+  var perguntaSelecionada = 0;
 
   void responder() {
-    // perguntaSelecionada++;
+    perguntaSelecionada++;
     print(perguntaSelecionada);
-  }
-
-  void Function() funcaoQueRetornaUmaOutraFuncao() {
-    return () {
-      print('Pergunta respondida #01!');
-    };
   }
 
   @override
@@ -47,5 +41,12 @@ class PerguntaApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  @override
+  PerguntaAppState createState() {
+    return PerguntaAppState();
   }
 }
