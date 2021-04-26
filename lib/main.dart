@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzapp/resultado.dart';
 import './resposta.dart';
 import './questao.dart';
 
@@ -56,7 +57,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
                       .toList(),
                 ],
               )
-            : null,
+            : Resultado('Parabéns!'),
       ),
     );
   }
