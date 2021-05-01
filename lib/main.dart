@@ -1,46 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:quizzapp/questionario.dart';
 import 'package:quizzapp/resultado.dart';
-import './resposta.dart';
-import './questao.dart';
 
 main() => runApp(PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
-  var _perguntaSelecionada = 0;
-  final List<Map<String, Object>> _perguntas = const [
+  var _selectedQuestion = 0;
+  var _totalScore = 0;
+  final List<Map<String, Object>> _questions = const [
     {
-      'texto': 'Qual é a sua cor favorita?',
-      'resposta': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+      'text': 'Qual é a sua cor favorita?',
+      'resposta': [
+        {'text': 'Preto', 'score': 10},
+        {'text': 'Vermelho', 'score': 5},
+        {'text': 'Verde', 'score': 3},
+        {'text': 'Branco', 'score': 1},
+      ],
     },
     {
-      'texto': 'Qual é a seu animal favorito?',
-      'resposta': ['Girafa', 'Leão', 'Coelho', 'Elefante'],
+      'text': 'Qual é a seu animal favorito?',
+      'resposta': [
+        {'text': 'Girafa', 'score': 10},
+        {'text': 'Leão', 'score': 5},
+        {'text': 'Coelho', 'score': 3},
+        {'text': 'Elefante', 'score': 1},
+      ],
     },
     {
-      'texto': 'Qual é o seu instrutor favorito?',
-      'resposta': ['Maria', 'João', 'Leo', 'Pedro'],
+      'text': 'Qual é o seu instrutor favorito?',
+      'resposta': [
+        {'text': 'Maria', 'score': 10},
+        {'text': 'João', 'score': 5},
+        {'text': 'Leo', 'score': 3},
+        {'text': 'Pedro', 'score': 1},
+      ],
     },
   ];
 
-  bool get hasSelectedQuestion {
-    return _perguntaSelecionada < _perguntas.length;
-  }
-
-  void _responder() {
+  void _answer(int score) {
     setState(() {
       if (hasSelectedQuestion) {
-        _perguntaSelecionada++;
+        _selectedQuestion++;
       }
+      _totalScore += score;
     });
+  }
+
+  void _restartQuizz() {
+    setState(
+      () {
+        _selectedQuestion = 0;
+        _totalScore = 0;
+      },
+    );
+  }
+
+  bool get hasSelectedQuestion {
+    return _selectedQuestion < _questions.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> respostas = hasSelectedQuestion
-        ? _perguntas[_perguntaSelecionada]['resposta']
-        : null;
     // List<Widget> widgets =
-    //     respostas.map((text) => Resposta(text, _responder)).toList();
+    //     respostas.map((text) => Resposta(text, _answer)).toList();
 
     return MaterialApp(
       home: Scaffold(
@@ -49,15 +71,11 @@ class _PerguntaAppState extends State<PerguntaApp> {
           centerTitle: true,
         ),
         body: hasSelectedQuestion
-            ? Column(
-                children: <Widget>[
-                  Questao(_perguntas[_perguntaSelecionada]['texto']),
-                  ...respostas
-                      .map((text) => Resposta(text, _responder))
-                      .toList(),
-                ],
-              )
-            : Resultado('Parabéns!'),
+            ? Questionario(
+                perguntas: _questions,
+                perguntaSelecionada: _selectedQuestion,
+                onAnswer: _answer)
+            : Resultado(_totalScore, _restartQuizz),
       ),
     );
   }
